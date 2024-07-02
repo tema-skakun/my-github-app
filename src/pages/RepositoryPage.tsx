@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
 
 const GET_REPOSITORY_DETAILS = gql`
-  query($name: String!) {
-    repository(name: $name) {
+  query($owner: String!, $name: String!) {
+    repository(owner: $owner, name: $name) {
       name
       stargazers {
         totalCount
@@ -28,12 +28,14 @@ const GET_REPOSITORY_DETAILS = gql`
 `;
 
 const RepositoryPage: React.FC = () => {
-  const { name } = useParams<{ name: string }>();
-  const { data, loading } = useQuery(GET_REPOSITORY_DETAILS, {
-    variables: { name },
+  const { owner, name } = useParams<{ owner: string; name: string }>();
+  const { data, loading, error } = useQuery(GET_REPOSITORY_DETAILS, {
+    variables: { owner, name },
   });
 
   if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+  if (!data || !data.repository) return <p>No data available</p>;
 
   const repo = data.repository;
 

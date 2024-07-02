@@ -1,10 +1,10 @@
 import React from 'react';
-import {ApolloProvider, InMemoryCache, ApolloClient} from '@apollo/client';
-import {Provider} from 'react-redux';
+import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client';
+import { Provider } from 'react-redux';
 import store from './redux/store';
-import {Route, Routes} from "react-router-dom";
-import HomePage from "./pages/HomePage.tsx";
-import RepositoryPage from "./pages/RepositoryPage.tsx";
+import { Route, Routes } from 'react-router-dom';
+import HomePage from './pages/HomePage.tsx';
+import RepositoryPage from './pages/RepositoryPage.tsx';
 
 const client = new ApolloClient({
   uri: 'https://api.github.com/graphql',
@@ -19,8 +19,8 @@ const App: React.FC = () => {
     <ApolloProvider client={client}>
       <Provider store={store}>
         <Routes>
-          <Route path="/" element={<HomePage/>}/>
-          <Route path="/repository/:name" element={<RepositoryPage/>}/>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/repository/:owner/:name" element={<RepositoryPage />} />
         </Routes>
       </Provider>
     </ApolloProvider>

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { gql, useQuery } from '@apollo/client';
 import { RootState } from '../redux/store';
 import { setRepositories, setSearchQuery, setCurrentPage } from '../redux/slices/repositoriesSlice';
+import { NavLink } from 'react-router-dom';
 
 const GET_REPOSITORIES = gql`
   query($query: String!, $first: Int!, $after: String) {
@@ -13,6 +14,9 @@ const GET_REPOSITORIES = gql`
           ... on Repository {
             id
             name
+            owner {
+              login
+            }
             stargazers {
               totalCount
             }
@@ -37,6 +41,7 @@ const HomePage: React.FC = () => {
       const repos = data.search.edges.map((edge: any) => ({
         id: edge.node.id,
         name: edge.node.name,
+        owner: edge.node.owner.login,
         stars: edge.node.stargazers.totalCount,
         lastCommitDate: edge.node.pushedAt,
         url: edge.node.url,
@@ -51,7 +56,7 @@ const HomePage: React.FC = () => {
 
   const handlePageChange = (page: number) => {
     dispatch(setCurrentPage(page));
-    // выполню fetchMore для получения новых данных
+    // выполнить fetchMore для получения новых данных
   };
 
   return (
@@ -60,7 +65,10 @@ const HomePage: React.FC = () => {
       <ul>
         {repositories.map(repo => (
           <li key={repo.id}>
-            <a href={repo.url}>{repo.name}</a> - {repo.stars} stars - Last commit: {repo.lastCommitDate}
+            <NavLink to={`/repository/${repo.owner}/${repo.name}`}>
+              {repo.name}
+            </NavLink>
+            - ⭐ Star {repo.stars} - Last commit: {repo.lastCommitDate} - <a href={repo.url} target="_blank" rel="noopener noreferrer">link</a>
           </li>
         ))}
       </ul>
