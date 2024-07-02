@@ -46,7 +46,7 @@ const RepositoryPage: React.FC = () => {
       <p>Last commit: {repo.pushedAt}</p>
       <div>
         <img src={repo.owner.avatarUrl} alt={repo.owner.login} />
-        <a href={repo.owner.url}>{repo.owner.login}</a>
+        <a href={repo.owner.url} target="_blank">{repo.owner.login}</a>
       </div>
       <ul>
         {repo.languages.edges.map((lang: any) => (

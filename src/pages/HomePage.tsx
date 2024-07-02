@@ -68,7 +68,8 @@ const HomePage: React.FC = () => {
             <NavLink to={`/repository/${repo.owner}/${repo.name}`}>
               {repo.name}
             </NavLink>
-            - ⭐ Star {repo.stars} - Last commit: {repo.lastCommitDate} - <a href={repo.url} target="_blank" rel="noopener noreferrer">link</a>
+            {' '}⭐ Star {repo.stars} - Last commit: {repo.lastCommitDate} -
+            <a href={repo.url} target="_blank" rel="noopener noreferrer">link</a>
           </li>
         ))}
       </ul>
